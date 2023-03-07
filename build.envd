@@ -21,3 +21,5 @@ def gpt_serving():
         "transformers",
         "mosec",
     ])
+    io.copy("main.py", "/")
+    config.entrypoint(["python", "main.py", "--timeout", "20000"])
