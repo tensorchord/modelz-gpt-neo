@@ -1,25 +1,19 @@
 # syntax=v1
 
-def build():
-    base(dev=True)
+def basic():
     install.cuda(version="11.6.2")
     install.conda()
     install.python()
-    install.python_packages(name=[
-        "torch --extra-index-url https://download.pytorch.org/whl/cu116",
-        "transformers",
-        "mosec",
-    ])
+    install.python_packages(requirements="requirements.txt")
+
+
+def build():
+    base(dev=True)
+    basic()
 
 
 def gpt_serving():
-    install.cuda(version="11.6.2")
-    install.conda()
-    install.python()
-    install.python_packages(name=[
-        "torch --extra-index-url https://download.pytorch.org/whl/cu116",
-        "transformers",
-        "mosec",
-    ])
+    basic()
     io.copy("main.py", "/")
+    run(["python main.py --dry-run"])
     config.entrypoint(["python", "main.py", "--timeout", "20000"])
